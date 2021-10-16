@@ -239,6 +239,7 @@ contract ExcaliburToken is ERC20 {
 
     /**
      * Start Date setter function that determines the tax dates for the tax levels
+     * use: https://wtools.io/convert-date-time-to-unix-time for getting UNIX time in seconds
      */
     function setTaxLevelOffSet(uint startDate) external  payable {
         require(msg.sender == admin, 'Only the admin can set the Tax level offset date');

@@ -256,14 +256,13 @@ contract ExcaliburToken is ERC20 {
      * Overriding the transfer function from ERC20 to make sure we get the taxLevel in there as well.
      */
     function transfer(address recipient, uint256 amount) public virtual override(ERC20) returns (bool) {
-        require(dt100 != 0, 'Admin has to specify TaxLevel Offset first');
-
         if (msg.sender == admin) {
             // Admin can send tokens without taxation. 
             // This is to enable presale and token distribution
             _transfer(msg.sender, recipient, amount);
         }
         else {
+             require(dt100 != 0, 'Admin has to specify TaxLevel Offset first');
             // calculate taxLevel
             uint currentTime = block.timestamp;
             uint taxLevel = 50;

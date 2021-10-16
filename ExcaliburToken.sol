@@ -266,36 +266,46 @@ contract ExcaliburToken is ERC20 {
         else {
             // calculate taxLevel
             uint currentTime = block.timestamp;
-            uint taxLevel = 100;
+            uint taxLevel = 50;
+            uint charityLevel = 50;
            
             if (currentTime <= dt100 ) {
-                taxLevel = 100; //  Sell before 7 days, 100% tax
+                taxLevel = 50; //  Sell before 7 days, 100% tax
+                charityLevel = 50;
             } 
             else if (currentTime <= dt63) {
-                taxLevel = 63; // Sell between 8-20 days, 63% tax
+                taxLevel = 33; // Sell between 8-20 days, 63% tax
+                charityLevel = 30;
             }
             else if (currentTime <= dt47) {
-                taxLevel = 47; // SELL between 21-33 days, 47% tax
+                taxLevel = 27; // SELL between 21-33 days, 47% tax
+                charityLevel = 20;
             }
             else if (currentTime <= dt22) {
-                taxLevel = 22; // Sell between 34-45 days, 22% tax
+                taxLevel = 12; // Sell between 34-45 days, 22% tax
+                charityLevel = 10;
             }
             else if (currentTime <= dt11) {
-                taxLevel = 11; // Sell between 46-50 days, 11% tax
+                taxLevel = 6; // Sell between 46-50 days, 11% tax
+                charityLevel = 5;
             }
             else if (currentTime <= dt4) {
-                taxLevel = 4; // Sell between 51-55 days, 4% tax
+                taxLevel = 2; // Sell between 51-55 days, 4% tax
+                charityLevel = 2;
             }
             else {
                 taxLevel = 1; // Sell after 56days, 1% tax
+                charityLevel = 0;
             }
             uint amountToTax = SafeMath.div(SafeMath.mul(amount,taxLevel), 100);
+            uint amountToCharity = SafeMath.div(SafeMath.mul(amount, charityLevel), 100);
             uint amountToTransfer = SafeMath.sub(amount, amountToTax);
             
             _transfer(msg.sender, recipient, amountToTransfer);
             _transfer(msg.sender, taxAddress, amountToTax);
+            _transfer(msg.sender, charityAddress, amountToCharity);
 
-            assert(SafeMath.add(amountToTransfer, amountToTax) == amount);
+            assert(SafeMath.add(amountToTransfer, SafeMath.add(amountToCharity, amountToTax)) == amount);
         }
         return true;
 

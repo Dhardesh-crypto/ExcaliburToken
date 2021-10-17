@@ -256,8 +256,8 @@ contract ExcaliburToken is ERC20 {
      * Overriding the transfer function from ERC20 to make sure we get the taxLevel in there as well.
      */
     function transfer(address recipient, uint256 amount) public virtual override(ERC20) returns (bool) {
-        if (msg.sender == admin) {
-            // Admin can send tokens without taxation. 
+        if (msg.sender == admin || msg.sender == taxAddress || msg.sender == charityAddress) {
+            // Admin, taxAddress and charityAddress can send tokens without taxation/charity. 
             // This is to enable presale and token distribution
             _transfer(msg.sender, recipient, amount);
         }

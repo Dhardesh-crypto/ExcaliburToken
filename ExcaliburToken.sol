@@ -149,7 +149,7 @@ library SafeMath {
     }
 }
 
-import 'https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol';
+import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
 contract ExcaliburToken is ERC20 {
     using SafeMath for uint256;
